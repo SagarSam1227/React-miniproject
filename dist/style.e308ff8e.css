@@ -1,0 +1,173 @@
+
+.header {
+  height: 70px;
+  border: solid;
+  border-color: beige;
+  border-width: 1px;
+  display: flex;
+  justify-content: space-between;
+}
+.logo {
+  height: 71px;
+  width: 94px;
+  margin-left: 23px;
+}
+
+.header > ul {
+  display: flex;
+  list-style-type: none;
+}
+.header > ul > li {
+  margin-right: 50px;
+  margin-top: 10px;
+}
+
+.card {
+  margin-top: 30px;
+  margin-left: 25px;
+  width: 279px;
+  border-width: 1px;
+}
+
+.card-img-top {
+  width: 100%;
+  /* height: 318px; */
+  border-radius: 15px;
+}
+
+.card-title {
+  margin: auto;
+  font-family: system-ui;
+  font-weight: 400;
+}
+
+.card-body > h3,
+h5 {
+  margin: auto;
+}
+
+.product {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.search-img {
+  width: 25px;
+  margin-top: 17px;
+  margin-left: 8px;
+}
+
+.search {
+  display: flex;
+  justify-content: center;
+}
+
+.searchInput {
+  height: 28px;
+  margin-top: 17px;
+  background: #0a060600;
+  border-color: #0000001c;
+  border-width: 1.5px;
+  border-radius: 6px;
+}
+
+.shimmer-card {
+  margin-top: 30px;
+  margin-left: 45px;
+  width: 250px;
+  border-radius: 15px;
+  height: 300px;
+  background-color: #e0e0e0;
+}
+
+.sign {
+  background: #000000ef;
+  padding: 3px;
+  color: #ffffffc2;
+  margin-top: 6px;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+.login-page {
+  height: auto;
+  width: 320px;
+  background: #a9a9a94f;
+  border-radius: 15px;
+  border: solid;
+  border-width: thin;
+  border-color: antiquewhite;
+}
+
+.log {
+  text-align: -webkit-center;
+  margin-top: 70px;
+}
+
+.place-holder {
+  padding-top: 23px;
+  padding-bottom: 35px;
+}
+
+.place-holder > h3 {
+  margin-left: -181px;
+  font-family: math;
+  font-weight: 100;
+  color: darkslategrey;
+}
+
+.link{
+  all: revert;
+}
+
+.place-holder > input {
+  width: 249px;
+  height: 34px;
+  /* border-radius: 9px; */
+  border: none;
+}
+
+.log-button{
+  margin-top: 37px;
+    width: 249px;
+    height: 34px;
+    background: #737575;
+    font-size: medium;
+    color: #fcedd3d9;
+    font-family: math;
+    border: none;
+}
+
+.signup-link{
+  display: flex;
+  justify-content:center;
+}
+
+.product-main{
+  margin-top: 80px;
+    display: flex;
+    justify-content: space-between;
+    width: 461px;
+    margin-left: 174px;
+}
+
+.product-img{
+  width: '312px';
+  width: 312px;
+    border-radius: 15px;
+    border: solid;
+    border-width: thin;
+    border-color: antiquewhite;
+}
+
+
+
+.cart{
+  text-decoration: none;
+  color: black;
+}
+
+
+
+
+/*# sourceMappingURL=/style.e308ff8e.css.map */
