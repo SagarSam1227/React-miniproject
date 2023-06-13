@@ -28863,7 +28863,33 @@ if ("development" === 'production') {
 } else {
   module.exports = require('./cjs/react-dom.development.js');
 }
-},{"./cjs/react-dom.development.js":"node_modules/react-dom/cjs/react-dom.development.js"}],"src/components/constants.js":[function(require,module,exports) {
+},{"./cjs/react-dom.development.js":"node_modules/react-dom/cjs/react-dom.development.js"}],"node_modules/react-dom/client.js":[function(require,module,exports) {
+'use strict';
+
+var m = require('react-dom');
+if ("development" === 'production') {
+  exports.createRoot = m.createRoot;
+  exports.hydrateRoot = m.hydrateRoot;
+} else {
+  var i = m.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+  exports.createRoot = function (c, o) {
+    i.usingClientEntryPoint = true;
+    try {
+      return m.createRoot(c, o);
+    } finally {
+      i.usingClientEntryPoint = false;
+    }
+  };
+  exports.hydrateRoot = function (c, h, o) {
+    i.usingClientEntryPoint = true;
+    try {
+      return m.hydrateRoot(c, h, o);
+    } finally {
+      i.usingClientEntryPoint = false;
+    }
+  };
+}
+},{"react-dom":"node_modules/react-dom/index.js"}],"src/components/constants.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -35828,8 +35854,9 @@ exports.default = void 0;
 var _react = require("react");
 const userContext = (0, _react.createContext)({
   user: {
-    name: "Sagar Sam",
-    email: "sagar@gmail.com"
+    name: "",
+    username: "",
+    contact: ""
   }
 });
 var _default = userContext;
@@ -35850,9 +35877,10 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 const Header = () => {
   const {
-    user
+    user,
+    setLoginUser
   } = (0, _react.useContext)(_userContext.default);
-  console.log(user);
+  console.log(user, 'hahahah');
   const [login, setLogIn] = (0, _react.useState)("login");
   return /*#__PURE__*/_react.default.createElement("div", {
     className: "header"
@@ -35862,22 +35890,23 @@ const Header = () => {
     className: "logo",
     alt: "okk",
     src: _constants.logo
-  })), /*#__PURE__*/_react.default.createElement("ul", null, /*#__PURE__*/_react.default.createElement("li", {
-    className: "",
+  })), /*#__PURE__*/_react.default.createElement("ul", null, user?.name ? /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("li", null, "support"), /*#__PURE__*/_react.default.createElement("li", null, "cart"), /*#__PURE__*/_react.default.createElement("li", null, "Wishlist"), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+    className: "cart",
+    to: "/cart"
+  }, "Cart"))) : /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null), user?.name ? /*#__PURE__*/_react.default.createElement("li", {
+    className: ""
+  }, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
     onClick: () => {
-      if (login === "login") {
-        setLogIn("logout");
-      } else {
-        setLogIn("login");
-      }
-    }
+      setLoginUser({});
+    },
+    className: "sign",
+    to: "/login"
+  }, "Logout")) : /*#__PURE__*/_react.default.createElement("li", {
+    className: ""
   }, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
     className: "sign",
     to: "/login"
-  }, "Login")), /*#__PURE__*/_react.default.createElement("li", null, user.email), /*#__PURE__*/_react.default.createElement("li", null, user.name), /*#__PURE__*/_react.default.createElement("li", null, "Wishlist"), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
-    className: "cart",
-    to: "/cart"
-  }, "Cart"))));
+  }, "Login"))));
 };
 var _default = Header;
 exports.default = _default;
@@ -36029,14 +36058,6 @@ const Body = () => {
         setInput(e.target.value);
         const result = filterData(capList, input);
       }
-    }), /*#__PURE__*/_react.default.createElement("input", {
-      value: user.name,
-      onChange: e => {
-        setLoginUser({
-          name: e.target.value,
-          email: 'new'
-        });
-      }
     }), /*#__PURE__*/_react.default.createElement("div", {
       className: "img-div"
     }, /*#__PURE__*/_react.default.createElement("img", {
@@ -36090,7 +36111,87 @@ const Footer = () => {
 };
 var _default = Footer;
 exports.default = _default;
-},{"react":"node_modules/react/index.js"}],"src/components/login.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js"}],"utils/adminContext.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _react = require("react");
+const adminContext = (0, _react.createContext)({
+  admin: ''
+});
+var _default = adminContext;
+exports.default = _default;
+},{"react":"node_modules/react/index.js"}],"src/components/AdminLogin.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _react = _interopRequireWildcard(require("react"));
+var _reactRouterDom = require("react-router-dom");
+var _adminContext = _interopRequireDefault(require("../../utils/adminContext"));
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+const AdminLogin = () => {
+  const {
+    AdminLogin,
+    setAdminLogin
+  } = (0, _react.useContext)(_adminContext.default);
+  const [adminAuth, setAdminAuth] = (0, _react.useState)();
+  const [adminUsername, setAdminUsername] = (0, _react.useState)();
+  const [adminPasswrd, setAdminPasswrd] = (0, _react.useState)();
+  (0, _react.useEffect)(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/admin-authentication");
+        const result = await response.json();
+        console.log(result);
+        setAdminAuth(result);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, []);
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("div", {
+    className: "log"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "login-page"
+  }, /*#__PURE__*/_react.default.createElement("h3", {
+    style: {
+      color: "#545252"
+    }
+  }, "ADMIN LOGIN"), /*#__PURE__*/_react.default.createElement("div", {
+    className: "place-holder"
+  }, /*#__PURE__*/_react.default.createElement("h3", null, "user name"), /*#__PURE__*/_react.default.createElement("input", {
+    onChange: e => {
+      setAdminUsername(e.target.value);
+    }
+  }), /*#__PURE__*/_react.default.createElement("h3", null, "password"), /*#__PURE__*/_react.default.createElement("input", {
+    onChange: e => {
+      setAdminPasswrd(e.target.value);
+    }
+  }), adminUsername == adminAuth?.user && adminPasswrd == adminAuth?.password ? /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+    to: "/admin/dashboard"
+  }, /*#__PURE__*/_react.default.createElement("button", {
+    onClick: () => {
+      setAdminLogin(adminAuth);
+    },
+    className: "log-button"
+  }, "submit")) : /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+    to: "/admin"
+  }, /*#__PURE__*/_react.default.createElement("button", {
+    className: "log-button"
+  }, "submit"))))), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("br", null));
+};
+var _default = AdminLogin;
+exports.default = _default;
+},{"react":"node_modules/react/index.js","react-router-dom":"node_modules/react-router-dom/dist/index.js","../../utils/adminContext":"utils/adminContext.js"}],"src/components/AdminDashboard.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36098,9 +36199,228 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 var _react = _interopRequireDefault(require("react"));
-var _reactRouterDom = require("react-router-dom");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+const AdminDashboard = () => {
+  return /*#__PURE__*/_react.default.createElement("h1", null, "admin Dashboard");
+};
+var _default = AdminDashboard;
+exports.default = _default;
+},{"react":"node_modules/react/index.js"}],"utils/useFetchImp.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _react = require("react");
+const useFetchImp = (API, dependency) => {
+  const [output, setOutput] = (0, _react.useState)();
+  (0, _react.useEffect)(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(API);
+        const result = await response.json();
+        setOutput(result);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, [dependency]);
+  return output;
+};
+var _default = useFetchImp;
+exports.default = _default;
+},{"react":"node_modules/react/index.js"}],"src/components/ListUser.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _react = _interopRequireWildcard(require("react"));
+var _useFetchImp = _interopRequireDefault(require("../../utils/useFetchImp"));
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+const ListUser = () => {
+  const [userList, setUserList] = (0, _react.useState)([]);
+  (0, _react.useEffect)(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/users-list');
+        const result = await response.json();
+        console.log(result);
+        setUserList(result.userData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, []);
+  function updateData(id) {
+    const updatedData = userList.filter(e => e._id !== id);
+    setUserList(updatedData);
+  }
+  async function deleteOneUser(id) {
+    try {
+      const response = await fetch('http://localhost:3000/delete-user/' + id, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+  return /*#__PURE__*/_react.default.createElement("div", {
+    className: "table"
+  }, /*#__PURE__*/_react.default.createElement("table", {
+    id: "customers"
+  }, /*#__PURE__*/_react.default.createElement("thead", null, /*#__PURE__*/_react.default.createElement("tr", null, /*#__PURE__*/_react.default.createElement("th", null, "Name"), /*#__PURE__*/_react.default.createElement("th", null, "EmailId"), /*#__PURE__*/_react.default.createElement("th", null, "Contact"), /*#__PURE__*/_react.default.createElement("th", {
+    className: "edit-delete"
+  }), /*#__PURE__*/_react.default.createElement("th", {
+    className: "edit-delete"
+  }))), /*#__PURE__*/_react.default.createElement("tbody", null, userList.map(elem => {
+    console.log(elem);
+    return /*#__PURE__*/_react.default.createElement("tr", {
+      key: elem._id
+    }, /*#__PURE__*/_react.default.createElement("td", null, elem.name), /*#__PURE__*/_react.default.createElement("td", null, elem.username), /*#__PURE__*/_react.default.createElement("td", null, elem.contact), /*#__PURE__*/_react.default.createElement("td", null, /*#__PURE__*/_react.default.createElement("img", {
+      style: {
+        width: '26px'
+      },
+      src: "https://cdn-icons-png.flaticon.com/128/9356/9356210.png"
+    })), /*#__PURE__*/_react.default.createElement("td", null, /*#__PURE__*/_react.default.createElement("img", {
+      onClick: () => {
+        deleteOneUser(elem._id);
+        updateData(elem._id);
+      },
+      style: {
+        width: '26px'
+      },
+      src: "https://cdn-icons-png.flaticon.com/128/2907/2907762.png"
+    })));
+  }))));
+};
+var _default = ListUser;
+exports.default = _default;
+},{"react":"node_modules/react/index.js","../../utils/useFetchImp":"utils/useFetchImp.js"}],"src/components/AdminHeader.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _constants = require("./constants");
+var _react = _interopRequireWildcard(require("react"));
+var _reactRouterDom = require("react-router-dom");
+var _adminContext = _interopRequireDefault(require("../../utils/adminContext"));
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+const AdminHeader = () => {
+  const {
+    adminLogin,
+    setAdminLogin
+  } = (0, _react.useContext)(_adminContext.default);
+  return /*#__PURE__*/_react.default.createElement("div", {
+    className: "header"
+  }, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+    to: "/"
+  }, /*#__PURE__*/_react.default.createElement("img", {
+    className: "logo",
+    alt: "okk",
+    src: _constants.logo
+  })), /*#__PURE__*/_react.default.createElement("ul", null, adminLogin?.user ? /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+    className: "cart",
+    to: "/admin/dashboard"
+  }, "Home")), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+    className: "cart",
+    to: "/admin/list-user"
+  }, "Users")), /*#__PURE__*/_react.default.createElement("li", null, "products"), /*#__PURE__*/_react.default.createElement("li", null, "orders"), /*#__PURE__*/_react.default.createElement("li", null, "banner"), /*#__PURE__*/_react.default.createElement("li", {
+    className: ""
+  }, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+    onClick: () => {
+      setAdminLogin({});
+    },
+    className: "sign",
+    to: "/admin"
+  }, "Logout"))) : /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("li", {
+    className: ""
+  }, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+    className: "sign",
+    to: ""
+  }, "Admin")))));
+};
+var _default = AdminHeader;
+exports.default = _default;
+},{"./constants":"src/components/constants.js","react":"node_modules/react/index.js","react-router-dom":"node_modules/react-router-dom/dist/index.js","../../utils/adminContext":"utils/adminContext.js"}],"src/components/Admin.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _react = _interopRequireWildcard(require("react"));
+var _AdminHeader = _interopRequireDefault(require("./AdminHeader"));
+var _footer = _interopRequireDefault(require("./footer"));
+var _reactRouterDom = require("react-router-dom");
+var _adminContext = _interopRequireDefault(require("../../utils/adminContext"));
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+const Admin = () => {
+  const [adminLogin, setAdminLogin] = (0, _react.useState)({});
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_adminContext.default.Provider, {
+    value: {
+      adminLogin: adminLogin,
+      setAdminLogin: setAdminLogin
+    }
+  }, /*#__PURE__*/_react.default.createElement(_AdminHeader.default, null), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Outlet, null), /*#__PURE__*/_react.default.createElement(_footer.default, null)));
+};
+var _default = Admin;
+exports.default = _default;
+},{"react":"node_modules/react/index.js","./AdminHeader":"src/components/AdminHeader.js","./footer":"src/components/footer.js","react-router-dom":"node_modules/react-router-dom/dist/index.js","../../utils/adminContext":"utils/adminContext.js"}],"src/components/login.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _react = _interopRequireWildcard(require("react"));
+var _reactRouterDom = require("react-router-dom");
+var _useFetchImp = _interopRequireDefault(require("../../utils/useFetchImp"));
+var _userContext = _interopRequireDefault(require("../../utils/userContext"));
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 const Login = () => {
+  const {
+    user,
+    setLoginUser
+  } = (0, _react.useContext)(_userContext.default);
+  const [username, setUserName] = (0, _react.useState)('');
+  const [status, setStatus] = (0, _react.useState)('');
+  const [password, setPassword] = (0, _react.useState)();
+  const [starPassword, setStarPassword] = (0, _react.useState)("");
+  const fetchdata = (0, _useFetchImp.default)();
+  if (fetchdata) console.log(fetchdata, 'data........');
+  (0, _react.useEffect)(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/user/${username}`);
+        const result = await response.json();
+        console.log(result.userData);
+        setStatus(result.userData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, [username]);
   return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("div", {
     className: "log"
   }, /*#__PURE__*/_react.default.createElement("div", {
@@ -36111,8 +36431,24 @@ const Login = () => {
     }
   }, "LOGIN"), /*#__PURE__*/_react.default.createElement("div", {
     className: "place-holder"
-  }, /*#__PURE__*/_react.default.createElement("h3", null, "user name"), /*#__PURE__*/_react.default.createElement("input", null), /*#__PURE__*/_react.default.createElement("h3", null, "password"), /*#__PURE__*/_react.default.createElement("input", null), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+  }, /*#__PURE__*/_react.default.createElement("h3", null, "user name"), /*#__PURE__*/_react.default.createElement("input", {
+    onChange: e => {
+      setUserName(e.target.value);
+      console.log(typeof (username, username));
+    }
+  }), /*#__PURE__*/_react.default.createElement("h3", null, "password"), /*#__PURE__*/_react.default.createElement("input", {
+    onChange: e => {
+      setPassword(e.target.value);
+    }
+  }), console.log('over over...', status), status?.username == username && status?.password == password ? /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
     to: "/"
+  }, /*#__PURE__*/_react.default.createElement("button", {
+    className: "log-button",
+    onClick: e => {
+      setLoginUser(status);
+    }
+  }, "submit")) : /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+    to: "/login"
   }, /*#__PURE__*/_react.default.createElement("button", {
     className: "log-button"
   }, "submit"))), /*#__PURE__*/_react.default.createElement("div", {
@@ -36121,9 +36457,125 @@ const Login = () => {
     style: {
       color: "#545252"
     }
-  }, "Need an account?"), /*#__PURE__*/_react.default.createElement("h4", null, "signup")))), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("br", null));
+  }, "Need an account?"), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+    className: "signup",
+    to: '/signup'
+  }, /*#__PURE__*/_react.default.createElement("h4", null, "signup"))))), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("br", null));
 };
 var _default = Login;
+exports.default = _default;
+},{"react":"node_modules/react/index.js","react-router-dom":"node_modules/react-router-dom/dist/index.js","../../utils/useFetchImp":"utils/useFetchImp.js","../../utils/userContext":"utils/userContext.js"}],"src/components/Signup.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _react = _interopRequireWildcard(require("react"));
+var _reactRouterDom = require("react-router-dom");
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+const Signup = () => {
+  const [name, setName] = (0, _react.useState)();
+  const [mailId, setMailId] = (0, _react.useState)();
+  const [contact, setContact] = (0, _react.useState)();
+  const [password, setPassword] = (0, _react.useState)();
+
+  // useEffect(()=>{
+
+  //     const myData ={
+  //         name:"name",
+  //         mailId:"mailId",
+  //         contact:"contact",
+  //         password:"password"
+  //     }
+
+  //     const fetchData = async () => {
+  //         try {
+  //           const response = await fetch('http://localhost:3000/users-list',{
+  //             method:'POST',
+  //             headers:{
+  //                 'Content-Type':'application/json'
+  //             },
+  //             body:JSON.stringify({myData})
+  //           });
+  //           const result = await response.json();
+  //           console.log(result);
+
+  //         } catch (error) {
+  //           console.error(error);
+  //         }
+  //       };
+  //       fetchData();
+  // },[])
+
+  const myData = {
+    name: name,
+    mailId: mailId,
+    contact: contact,
+    password: password
+  };
+  const handleSubmit = async myData => {
+    // e.preventDefault();
+
+    try {
+      const response = await fetch('http://localhost:3000/users-list', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(myData)
+      });
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("div", {
+    className: "log"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "login-page"
+  }, /*#__PURE__*/_react.default.createElement("h3", {
+    style: {
+      color: "#545252"
+    }
+  }, "SIGN UP"), /*#__PURE__*/_react.default.createElement("div", {
+    className: "place-holder"
+  }, /*#__PURE__*/_react.default.createElement("h3", null, "name"), /*#__PURE__*/_react.default.createElement("input", {
+    onChange: e => {
+      setName(e.target.value);
+    }
+  }), /*#__PURE__*/_react.default.createElement("h3", null, "E-mail"), /*#__PURE__*/_react.default.createElement("input", {
+    onChange: e => {
+      setMailId(e.target.value);
+    }
+  }), /*#__PURE__*/_react.default.createElement("h3", null, "contact"), /*#__PURE__*/_react.default.createElement("input", {
+    onChange: e => {
+      setContact(e.target.value);
+    }
+  }), /*#__PURE__*/_react.default.createElement("h3", null, "password"), /*#__PURE__*/_react.default.createElement("input", {
+    onChange: e => {
+      setPassword(e.target.value);
+    }
+  }), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+    to: "/login"
+  }, /*#__PURE__*/_react.default.createElement("button", {
+    onClick: () => {
+      handleSubmit(myData);
+    },
+    className: "log-button"
+  }, "submit"))), /*#__PURE__*/_react.default.createElement("div", {
+    className: "signup-link"
+  }, /*#__PURE__*/_react.default.createElement("h4", {
+    style: {
+      color: "#545252"
+    }
+  }, "Already have an account?"), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+    className: "signup"
+  }, /*#__PURE__*/_react.default.createElement("h4", null, "Login"))))), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("br", null));
+};
+var _default = Signup;
 exports.default = _default;
 },{"react":"node_modules/react/index.js","react-router-dom":"node_modules/react-router-dom/dist/index.js"}],"src/components/ProductDetails.js":[function(require,module,exports) {
 "use strict";
@@ -36132,11 +36584,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var _react = _interopRequireDefault(require("react"));
-var _reactRouterDom = require("react-router-dom");
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _react = _interopRequireWildcard(require("react"));
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 const ProductDetails = () => {
-  const params = (0, _reactRouterDom.useParams)();
   return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("div", {
     className: "product-main"
   }, /*#__PURE__*/_react.default.createElement("img", {
@@ -36146,11 +36597,11 @@ const ProductDetails = () => {
     style: {
       color: "black"
     }
-  }, "Name"), /*#__PURE__*/_react.default.createElement("h3", null, "brand"), /*#__PURE__*/_react.default.createElement("h2", null, params.id))));
+  }, "Name"), /*#__PURE__*/_react.default.createElement("h3", null, "brand"), /*#__PURE__*/_react.default.createElement("h2", null, "3"))));
 };
 var _default = ProductDetails;
 exports.default = _default;
-},{"react":"node_modules/react/index.js","react-router-dom":"node_modules/react-router-dom/dist/index.js"}],"node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js"}],"node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
 function getBundleURLCached() {
   if (!bundleURL) {
@@ -36245,13 +36696,18 @@ LazyPromise.prototype.catch = function (onError) {
 "use strict";
 
 var _react = _interopRequireWildcard(require("react"));
-var _reactDom = _interopRequireDefault(require("react-dom"));
+var _client = _interopRequireDefault(require("react-dom/client.js"));
 var _header = _interopRequireDefault(require("./components/header.js"));
 var _body = _interopRequireDefault(require("./components/body.js"));
 var _Error = _interopRequireDefault(require("./components/Error.js"));
 var _footer = _interopRequireDefault(require("./components/footer.js"));
 var _Shimmer = _interopRequireDefault(require("./components/Shimmer.js"));
+var _AdminLogin = _interopRequireDefault(require("./components/AdminLogin.js"));
+var _AdminDashboard = _interopRequireDefault(require("./components/AdminDashboard.js"));
+var _ListUser = _interopRequireDefault(require("./components/ListUser.js"));
+var _Admin = _interopRequireDefault(require("./components/Admin.js"));
 var _login = _interopRequireDefault(require("./components/login.js"));
+var _Signup = _interopRequireDefault(require("./components/Signup.js"));
 var _ProductDetails = _interopRequireDefault(require("./components/ProductDetails.js"));
 var _reactRouterDom = require("react-router-dom");
 var _userContext = _interopRequireDefault(require("../utils/userContext.js"));
@@ -36260,10 +36716,7 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 const Cart = (0, _react.lazy)(() => require("_bundle_loader")(require.resolve("./components/Cart.js")));
 const Container = () => {
-  const [loginUser, setLoginUser] = (0, _react.useState)({
-    name: 'priyesh',
-    email: 'pri'
-  });
+  const [loginUser, setLoginUser] = (0, _react.useState)({});
   return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_userContext.default.Provider, {
     value: {
       user: loginUser,
@@ -36282,6 +36735,9 @@ const appRouter = (0, _reactRouterDom.createBrowserRouter)([{
     path: "/login",
     element: /*#__PURE__*/_react.default.createElement(_login.default, null)
   }, {
+    path: "/signup",
+    element: /*#__PURE__*/_react.default.createElement(_Signup.default, null)
+  }, {
     path: "/product/:id",
     element: /*#__PURE__*/_react.default.createElement(_ProductDetails.default, null)
   }, {
@@ -36290,12 +36746,26 @@ const appRouter = (0, _reactRouterDom.createBrowserRouter)([{
       fallback: /*#__PURE__*/_react.default.createElement(_Shimmer.default, null)
     }, /*#__PURE__*/_react.default.createElement(Cart, null))
   }]
+}, {
+  path: "/admin",
+  element: /*#__PURE__*/_react.default.createElement(_Admin.default, null),
+  errorElement: /*#__PURE__*/_react.default.createElement(_Error.default, null),
+  children: [{
+    path: '/admin',
+    element: /*#__PURE__*/_react.default.createElement(_AdminLogin.default, null)
+  }, {
+    path: "/admin/list-user",
+    element: /*#__PURE__*/_react.default.createElement(_ListUser.default, null)
+  }, {
+    path: "/admin/dashboard",
+    element: /*#__PURE__*/_react.default.createElement(_AdminDashboard.default, null)
+  }]
 }]);
-const root = _reactDom.default.createRoot(document.getElementById("root"));
+const root = _client.default.createRoot(document.getElementById("root"));
 root.render( /*#__PURE__*/_react.default.createElement(_reactRouterDom.RouterProvider, {
   router: appRouter
 }));
-},{"react":"node_modules/react/index.js","react-dom":"node_modules/react-dom/index.js","./components/header.js":"src/components/header.js","./components/body.js":"src/components/body.js","./components/Error.js":"src/components/Error.js","./components/footer.js":"src/components/footer.js","./components/Shimmer.js":"src/components/Shimmer.js","./components/login.js":"src/components/login.js","./components/ProductDetails.js":"src/components/ProductDetails.js","react-router-dom":"node_modules/react-router-dom/dist/index.js","_bundle_loader":"node_modules/parcel-bundler/src/builtins/bundle-loader.js","./components/Cart.js":[["Cart.b5dbdf09.js","src/components/Cart.js"],"Cart.b5dbdf09.js.map","src/components/Cart.js"],"../utils/userContext.js":"utils/userContext.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","react-dom/client.js":"node_modules/react-dom/client.js","./components/header.js":"src/components/header.js","./components/body.js":"src/components/body.js","./components/Error.js":"src/components/Error.js","./components/footer.js":"src/components/footer.js","./components/Shimmer.js":"src/components/Shimmer.js","./components/AdminLogin.js":"src/components/AdminLogin.js","./components/AdminDashboard.js":"src/components/AdminDashboard.js","./components/ListUser.js":"src/components/ListUser.js","./components/Admin.js":"src/components/Admin.js","./components/login.js":"src/components/login.js","./components/Signup.js":"src/components/Signup.js","./components/ProductDetails.js":"src/components/ProductDetails.js","react-router-dom":"node_modules/react-router-dom/dist/index.js","_bundle_loader":"node_modules/parcel-bundler/src/builtins/bundle-loader.js","./components/Cart.js":[["Cart.b5dbdf09.js","src/components/Cart.js"],"Cart.b5dbdf09.js.map","src/components/Cart.js"],"../utils/userContext.js":"utils/userContext.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -36320,7 +36790,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55893" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51105" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

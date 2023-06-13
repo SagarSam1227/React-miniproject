@@ -45,13 +45,13 @@ const Body = () => {
           ></input>
 
 
-
+{/* 
           <input value={user.name} onChange={(e)=>{
             setLoginUser({
               name:e.target.value,
-              email:'new'
+              username:'new'
             })
-          }}></input>
+          }}></input> */}
 
 
 

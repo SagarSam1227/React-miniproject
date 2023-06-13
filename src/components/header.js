@@ -5,8 +5,9 @@ import { Link } from "react-router-dom";
 import userContext from "../../utils/userContext";
 
 const Header = () => {
-  const {user} = useContext(userContext);
-  console.log(user);
+  const {user,setLoginUser} = useContext(userContext);
+  console.log(user,'hahahah');
+ 
 
   const [login, setLogIn] = useState("login");
   return (
@@ -15,28 +16,28 @@ const Header = () => {
         <img className="logo" alt="okk" src={logo}></img>
       </Link>
       <ul>
-        <li
-          className=""
-          onClick={() => {
-            if (login === "login") {
-              setLogIn("logout");
-            } else {
-              setLogIn("login");
-            }
-          }}
-        >
-          <Link className="sign" to="/login">
-            Login
-          </Link>
-        </li>
-        <li>{user.email}</li>
-        <li>{user.name}</li>
+       {user?.name?<>
+        <li>support</li>
+        <li>cart</li>
         <li>Wishlist</li>
         <li>
           <Link className="cart" to="/cart">
             Cart
           </Link>
         </li>
+       </>:<></>}
+        {user?.name?
+        <li className="">
+        <Link onClick={()=>{
+           setLoginUser({})
+        }} className="sign" to="/login">
+          Logout
+        </Link>
+      </li>:<li className="">
+        <Link className="sign" to="/login">
+          Login
+        </Link>
+      </li>}
       </ul>
     </div>
   );
